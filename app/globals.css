@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* global.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+.mybg {
+  background-color: #003d29;
+}
+.mytxt {
+  color: #1a5843;
+}
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  @apply text-gray-900;
+}
+
+.fade-edge-swiper {
+  position: relative;
+  overflow: hidden;
+}
+
+.fade-edge-swiper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5%;
+  height: 100%;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0.037)
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+@media (min-width: 1024px) {
+  .fade-edge-swiper::after {
+    @apply lg:hidden;
+  }
+}
+
+footer a {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+footer a:hover {
+  color: #c34482;
+}
