@@ -232,7 +232,7 @@ export default function Page() {
                 isRequired={data.confirmPassword === ""}
               >
                 <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
-                  Confirm Password
+                  Confirm Passwor
                 </FormLabel>
                 <Input
                   value={data.confirmPassword}
