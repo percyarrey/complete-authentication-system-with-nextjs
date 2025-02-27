@@ -74,11 +74,10 @@ export default function Page() {
         action: "login",
         redirect: false,
       });
-
       if (res?.error) {
         const errorMessage =
-          res.error === "Wrong Username and Password"
-            ? res.error
+          res.code === "Wrong Username and Password"
+            ? res.code
             : "Something went wrong! Try Again";
         toast.warn(errorMessage, {
           position: "top-center",

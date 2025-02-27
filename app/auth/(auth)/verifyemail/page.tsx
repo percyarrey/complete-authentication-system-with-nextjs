@@ -13,7 +13,11 @@ import { Button } from "@chakra-ui/react";
 
 const Page = () => {
   const [code, setCode] = useState("");
-  const [sendCode, setSendCode] = useState(false);
+  const [sendCode, setSendCode] = useState({
+    status: false,
+    message: "New verification code has been send again to your Email.",
+    loading: false,
+  });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   //SESSION
@@ -50,11 +54,29 @@ const Page = () => {
   };
 
   const handleVerifyEmailFxn = async () => {
+    setSendCode((prev) => ({ ...prev, loading: true }));
+
     try {
-      await handleVerifyEmail(data?.user?.email);
-      setSendCode(true);
+      const result = await handleVerifyEmail(data?.user?.email);
+
+      if (result.success) {
+        setSendCode((prev) => ({ ...prev, status: true }));
+      } else {
+        setSendCode((prev) => ({
+          ...prev,
+          status: true,
+          message: "Something went wrong. Please try again later",
+        }));
+      }
     } catch (error) {
       console.error(error);
+      setSendCode((prev) => ({
+        ...prev,
+        status: true,
+        message: "An error occurred. Please try again later.",
+      }));
+    } finally {
+      setSendCode((prev) => ({ ...prev, loading: false }));
     }
   };
 
@@ -96,16 +118,17 @@ const Page = () => {
         </form>
         <div className="mt-4 text-center">
           <p className="text-md font-light text-gray-500">
-            {sendCode ? (
-              <>New verification code has been send again to your Email.</>
+            {sendCode.status ? (
+              <>{sendCode.message}</>
             ) : (
               <>
                 {"Didn't "}recieve code?{" "}
                 <button
                   className=" text-green-700"
                   onClick={handleVerifyEmailFxn}
+                  disabled={sendCode.loading}
                 >
-                  Send code
+                  {sendCode.loading ? "Sending..." : "Send code"}
                 </button>
               </>
             )}

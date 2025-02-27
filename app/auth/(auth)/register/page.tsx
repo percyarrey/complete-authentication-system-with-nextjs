@@ -111,8 +111,7 @@ export default function Page() {
         action: "signin",
         redirect: false,
       });
-
-      if (res?.error === null) {
+      if (!res?.error) {
         toast.success("Sign Up Successfully", {
           position: "top-center",
           autoClose: 2000,
@@ -125,8 +124,8 @@ export default function Page() {
         }, 500);
       } else {
         const message =
-          res?.error === "Email Already Exist"
-            ? res.error
+          res?.code === "Email Already Exist"
+            ? res.code
             : "Something went wrong! Try Again";
         toast.warn(message, {
           position: "top-center",

@@ -1,14 +1,18 @@
-import NextAuth, { User as NextAuthUser, Account, Profile } from "next-auth";
+import NextAuth, {
+  User as NextAuthUser,
+  Account,
+  Profile,
+  CredentialsSignin,
+} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 
-//EMAIL
+// EMAIL
 import sendEmail from "@/utils/sendEmail";
-
 import UserModel from "@/models/user";
 import connectDB from "@/utils/connectDB";
 
-//INTERFACES
+// INTERFACES
 interface CustomUser extends NextAuthUser {
   id: string; // Ensure this is always a string
   role?: string;
@@ -21,6 +25,13 @@ interface CustomProfile extends Profile {
   email_verified?: boolean;
   role?: string;
   email?: string;
+}
+
+class CustomError extends CredentialsSignin {
+  constructor(message: string, errorOptions?: any) {
+    super(message, errorOptions); // Call the parent constructor
+    this.code = message; // Customize your error code
+  }
 }
 
 function generatePassword(length = 8) {
@@ -49,26 +60,28 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       type: "credentials",
       credentials: {},
       async authorize(credentials) {
+        await connectDB();
         const { email, name, password, action, rememberMe } =
           credentials as any;
-        await connectDB();
         let user = await UserModel.findOne({ email });
 
         if (action === "signin") {
           if (user) {
-            throw new Error("Email Already Exists");
+            throw new CustomError("Email Already Exist"); // Use the custom error
           }
           try {
             user = await UserModel.create({ email, name, password });
           } catch (error: any) {
             console.error(error.message);
+            throw new Error("User creation failed"); // Use the custom error
           }
         }
 
         if (action === "login") {
-          if (!user) throw new Error("Wrong Username and Password");
+          if (!user) throw new CustomError("Wrong Username and Password"); // Use the custom error
           const passwordMatch = await user.comparePassword(password);
-          if (!passwordMatch) throw new Error("Wrong Username and Password");
+          if (!passwordMatch)
+            throw new CustomError("Wrong Username and Password"); // Use the custom error
         }
 
         return {
@@ -83,10 +96,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
+    async signIn({ user, account, profile, credentials }) {
       if (account?.provider === "google") {
         if (!profile || !profile.email_verified || !profile.email) {
-          throw new Error("Google authentication failed");
+          throw new Error("Google authentication failed"); // Use the custom error
         }
         await connectDB();
         const name = profile.name || "";
@@ -142,6 +155,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
 });
