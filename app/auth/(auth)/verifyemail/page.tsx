@@ -28,7 +28,7 @@ const Page = () => {
     setLoading(true);
 
     try {
-      var result = await handleVerifyEmailCode(data?.user?.email, code);
+      const result = await handleVerifyEmailCode(data?.user?.email, code);
 
       if (result.success) {
         toast.success("Email is verified! Please Login to continue");
@@ -49,7 +49,7 @@ const Page = () => {
     }
   };
 
-  const handleVerifyEmailFxn = async (e: any) => {
+  const handleVerifyEmailFxn = async () => {
     try {
       await handleVerifyEmail(data?.user?.email);
       setSendCode(true);

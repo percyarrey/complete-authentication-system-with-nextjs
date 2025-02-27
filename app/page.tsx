@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React from "react";
 /* HOMESECTIONS */
 
 /* DYNAMIC */
-import dynamic from "next/dynamic";
+/* import dynamic from "next/dynamic"; */
 /* const Hero = dynamic(() => import('./components/homesections/Hero'));
 const HeroCarts = dynamic(() => import('./components/homesections/HeroCarts'));
 const Discount = dynamic(() => import('./components/homesections/Discount'));
@@ -12,13 +12,13 @@ const Trending = dynamic(() => import('./components/homesections/Trending'));
 const ExtraProduct = dynamic(() => import('./components/homesections/ExtraProduct')); */
 
 export default function Home() {
-  const [component1Loaded, setComponent1Loaded] = useState(false);
+  /* const [component1Loaded, setComponent1Loaded] = useState(false);
   const [component2Loaded, setComponent2Loaded] = useState(false);
   const [component3Loaded, setComponent3Loaded] = useState(false);
   const [component4Loaded, setComponent4Loaded] = useState(false);
   const [component5Loaded, setComponent5Loaded] = useState(false);
-  const [component6Loaded, setComponent6Loaded] = useState(false);
-  useEffect(() => {
+  const [component6Loaded, setComponent6Loaded] = useState(false); */
+  /* useEffect(() => {
     setComponent1Loaded(true);
   }, []);
 
@@ -39,7 +39,7 @@ export default function Home() {
 
   const handleComponent6 = () => {
     setComponent6Loaded(true);
-  };
+  }; */
 
   return (
     <main className="min-h-[55vh]">

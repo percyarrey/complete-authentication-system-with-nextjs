@@ -10,7 +10,7 @@ import { FaUser, FaUserPlus } from "react-icons/fa";
 import { FaSignInAlt } from "react-icons/fa";
 
 //COMPONENT
-import Image from "next/image";
+/* import Image from "next/image"; */
 
 //NEXT AUTH
 import { signOut, useSession } from "next-auth/react";
@@ -41,18 +41,18 @@ function Header() {
   const [Menu, setMenu] = useState(false);
 
   //HANDLE NAVBAR
-  const handleNavbar = (e: any) => {
+  const handleNavbar = () => {
     document?.getElementById("navbar-sticky")?.classList.toggle("hidden");
     setMenu((prev) => !prev);
     if (document.getElementById("NavbarClose")?.classList.contains("hidden")) {
       document.getElementById("NavbarClose")?.classList.toggle("hidden");
     }
   };
-  const handleDropdown = (e: any) => {
+  const handleDropdown = () => {
     document.getElementById("user-dropdown")?.classList.toggle("hidden");
     document.getElementById("user-dropdown")?.classList.toggle("absolute");
   };
-  const DropdownClose = (e: any) => {
+  const DropdownClose = () => {
     document.getElementById("user-dropdown")?.classList.toggle("hidden");
     document.getElementById("user-dropdown")?.classList.toggle("absolute");
   };

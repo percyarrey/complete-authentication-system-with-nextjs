@@ -39,7 +39,7 @@ export default function ResetPassword({ searchParams }: { searchParams: any }) {
 
       return params.toString();
     },
-    [searchParams]
+    [newSearchParams]
   );
 
   //VERIFY CODE
@@ -70,6 +70,7 @@ export default function ResetPassword({ searchParams }: { searchParams: any }) {
           });
         }
       } catch (error) {
+        console.error(error);
         toast.warn("Something went wrong. Try again!", {
           position: "top-center",
           autoClose: 2000,

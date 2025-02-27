@@ -53,7 +53,8 @@ export default function Page() {
           router.push(`/auth/resetpassword?id=${id}`);
         }, 500);
       }
-    } catch (error: any) {
+    } catch (e) {
+      console.error(e);
       toast.error("Something went wrong! Please try again.", {
         position: "top-center",
         autoClose: 2000,

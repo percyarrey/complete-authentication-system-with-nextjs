@@ -1,25 +1,25 @@
-'use client'
-import { SessionProvider } from 'next-auth/react'
-import React from 'react'
-import { store } from '@/store/store'
-import { Provider} from 'react-redux'
+"use client";
+import { SessionProvider } from "next-auth/react";
+import React from "react";
+import { store } from "@/store/store";
+import { Provider } from "react-redux";
 
-export default function AuthProvider({children}) {
+export default function AuthProvider({ children }) {
   class ErrorBoundary extends React.Component {
     constructor(props) {
-      super(props)
-   
+      super(props);
+
       // Define a state variable to track whether is an error or not
-      this.state = { hasError: false }
-    }                       
+      this.state = { hasError: false };
+    }
     static getDerivedStateFromError(error) {
       // Update state so the next render will show the fallback UI
-   
-      return { hasError: true }
+      console.error(error);
+      return { hasError: true };
     }
     componentDidCatch(error, errorInfo) {
       // You can use your own error logging service here
-      console.log({ error, errorInfo })
+      console.log({ error, errorInfo });
     }
     render() {
       // Check if the error is thrown
@@ -35,21 +35,19 @@ export default function AuthProvider({children}) {
               Try again?
             </button>
           </div>
-        )
+        );
       }
-   
+
       // Return children components in case of no error
-   
-      return this.props.children
+
+      return this.props.children;
     }
   }
   return (
     <ErrorBoundary>
       <Provider store={store}>
-      <SessionProvider>
-          {children}
-      </SessionProvider>
-    </Provider>
+        <SessionProvider>{children}</SessionProvider>
+      </Provider>
     </ErrorBoundary>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import { Model,models,model } from "mongoose";
-import { Document,Schema } from "mongoose";
+import { Model, models, model } from "mongoose";
+import { Document, Schema } from "mongoose";
 
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema({
   name: {
@@ -17,10 +17,10 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})$/i.test(v);
       },
-      message: props => `${props.value} is not a valid email!`
+      message: (props) => `${props.value} is not a valid email!`,
     },
   },
   password: {
@@ -28,10 +28,10 @@ const userSchema = new Schema({
     required: true,
     minlength: 8,
     validate: {
-      validator: function(v) {
+      validator: function (v: any) {
         return /[A-Z]/.test(v); // Check for at least one uppercase letter
       },
-      message: 'Password must contain at least one uppercase letter.',
+      message: "Password must contain at least one uppercase letter.",
     },
   },
   isVerified: {
@@ -56,8 +56,8 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'], // You can add more roles if needed
-    default: 'user',
+    enum: ["user", "admin"], // You can add more roles if needed
+    default: "user",
   },
   isBlock: {
     type: Boolean,
@@ -73,28 +73,27 @@ const userSchema = new Schema({
   },
 });
 
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
-  userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-  
-    try {
-      const generatedPassword =this.password;
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(generatedPassword, salt);
-      next();
-    } catch (error) {
-      throw error;
-    }
-  });
+  try {
+    const generatedPassword = this.password;
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(generatedPassword, salt);
+    next();
+  } catch (error) {
+    throw error;
+  }
+});
 
-userSchema.methods.comparePassword = async function (password){
-    try{
-        return await  bcrypt.compare(password,this.password);
-    } catch(err){
-        throw err
-    }
-}
+userSchema.methods.comparePassword = async function (password: string) {
+  try {
+    return await bcrypt.compare(password, this.password);
+  } catch (err) {
+    throw err;
+  }
+};
 
-const UserModel = models.User || model('User',userSchema)
+const UserModel = models.User || model("User", userSchema);
 
-export default UserModel
+export default UserModel;
