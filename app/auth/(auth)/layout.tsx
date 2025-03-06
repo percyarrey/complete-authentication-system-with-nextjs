@@ -22,13 +22,17 @@ export default async function PrivateLayout({
   // Type assertion for the session
   const session = data as CustomSession;
   if (session?.user && session?.user?.isVerified) {
-    redirect("/");
+    if (session?.user.role === "admin") {
+      redirect("/admin/recent-requests");
+    } else {
+      redirect("/user/sell-code");
+    }
   }
 
   return (
-    <>
+    <div className="px-4">
       <ClientRedirect />
       {children}
-    </>
+    </div>
   );
 }

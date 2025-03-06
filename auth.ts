@@ -25,6 +25,7 @@ interface CustomProfile extends Profile {
   email_verified?: boolean;
   role?: string;
   email?: string;
+  isVerified: boolean;
 }
 
 class CustomError extends CredentialsSignin {
@@ -46,7 +47,8 @@ function generatePassword(length = 8) {
 
   return password;
 }
-
+let role = "user";
+let isVerified = false;
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: {
     strategy: "jwt",
@@ -67,43 +69,47 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
         if (action === "signin") {
           if (user) {
-            throw new CustomError("Email Already Exist"); // Use the custom error
+            throw new CustomError("Email Already Exist");
           }
           try {
-            user = await UserModel.create({ email, name, password });
+            user = await UserModel.create({
+              email,
+              name,
+              password,
+              isVerified: false,
+            });
           } catch (error: any) {
             console.error(error.message);
-            throw new Error("User creation failed"); // Use the custom error
+            throw new Error("User creation failed");
           }
         }
 
         if (action === "login") {
-          if (!user) throw new CustomError("Wrong Username and Password"); // Use the custom error
+          if (!user) throw new CustomError("Wrong Username and Password");
           const passwordMatch = await user.comparePassword(password);
           if (!passwordMatch)
-            throw new CustomError("Wrong Username and Password"); // Use the custom error
+            throw new CustomError("Wrong Username and Password");
         }
-
         return {
-          id: user._id.toString(), // Ensure this is a string
+          id: user._id.toString(),
           name: user.name,
           email: user.email,
           role: user.role,
-          isVerified: user.isVerified,
+          isVerified: user.isVerified, // Ensure this is fetched correctly
           rememberMe,
-        } as CustomUser; // Cast to CustomUser
+        } as CustomUser;
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, credentials }) {
+    async signIn({ account, profile }) {
       if (account?.provider === "google") {
         if (!profile || !profile.email_verified || !profile.email) {
-          throw new Error("Google authentication failed"); // Use the custom error
+          throw new Error("Google authentication failed");
         }
         await connectDB();
         const name = profile.name || "";
-        const email = profile.email; // Now safely accessed
+        const email = profile.email;
         let userRecord = await UserModel.findOne({ email });
         const password = generatePassword();
 
@@ -112,7 +118,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             email,
             name,
             password,
-            isVerified: true,
+            isVerified: true, // Set isVerified here
+            role: "user",
           });
 
           const msg = {
@@ -126,31 +133,31 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           } catch (error) {
             console.error(error);
           }
-        } else {
-          (profile as CustomProfile).role = userRecord.role; // Ensure profile is defined
         }
+        profile.role = userRecord.role;
+        profile.isVerified = userRecord.isVerified; // Ensure this is set correctly
         return profile.email_verified && profile.email.endsWith("@gmail.com");
       }
-      return true; // Do different verification for other providers that don't have `email_verified`
+      return true;
     },
     jwt(params: any) {
-      if (params.user?.role) {
-        params.token.role = params.user.role;
-        params.token.id = params.user.id; // Ensure this is correct
-        params.token.isVerified = params.user.isVerified;
+      if (params.user) {
+        params.token.role = params?.profile?.role || params?.user?.role;
+        params.token.id = params?.user?.id;
+        params.token.isVerified =
+          params?.profile?.isVerified || params?.user?.isVerified; // Set from user object
       }
-      // Set token to expire based on rememberMe value
       params.token.exp = params.user?.rememberMe
-        ? Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60 // 30 days
-        : Math.floor(Date.now() / 1000) + 24 * 60 * 60; // 1 day
+        ? Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60
+        : Math.floor(Date.now() / 1000) + 24 * 60 * 60;
 
       return params.token;
     },
     session({ session, token }: { session: any; token: any }) {
       if (session.user) {
-        session.user.id = token.id; // Ensure this is correct
+        session.user.id = token.id;
         session.user.role = token.role;
-        session.user.isVerified = token.isVerified;
+        session.user.isVerified = token.isVerified; // Set from token
       }
       return session;
     },

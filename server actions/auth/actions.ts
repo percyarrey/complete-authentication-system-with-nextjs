@@ -6,6 +6,7 @@ import {
   verifyEmailCode,
 } from "@/services/auth/emailService";
 import {
+  changePassword,
   resetPassword,
   verifyResetPasswordCode,
 } from "@/services/auth/passwordServices";
@@ -65,5 +66,16 @@ export async function handleVerifyEmailCode(email: string, code: string) {
   } catch (error) {
     console.error("Error verifying email code:", error);
     throw new Error("Failed to verify email code");
+  }
+}
+
+export async function handleChangePassword(id: string, newPassword: string) {
+  try {
+    const result = await changePassword(id, newPassword);
+    console.log("Reset Password Result:", result);
+    return result;
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    throw new Error("Failed to reset password");
   }
 }

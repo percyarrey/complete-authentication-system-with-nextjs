@@ -166,123 +166,130 @@ export default function ResetPassword({ searchParams }: { searchParams: any }) {
   }
 
   return (
-    <section className="flex min-h-[95vh] justify-center items-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        {isCodeVerified ? (
-          <>
-            <h1 className="text-2xl font-bold text-center mytxt">
-              Reset Password
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-5">
-              <FormControl isInvalid={!!passwordError}>
-                <FormLabel
-                  htmlFor="password"
-                  className="text-md font-medium text-gray-900"
+    <>
+      <section className="flex min-h-[95vh] justify-center items-center">
+        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+          {isCodeVerified ? (
+            <>
+              <h1 className="text-2xl font-bold text-center mytxt">
+                Reset Password
+              </h1>
+              <form onSubmit={handleSubmit} className="space-y-4 mt-5">
+                <FormControl isInvalid={!!passwordError}>
+                  <FormLabel
+                    htmlFor="password"
+                    className="text-md font-medium text-gray-900"
+                  >
+                    New Password
+                  </FormLabel>
+                  <Input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    placeholder="Enter new password"
+                    required
+                  />
+                  {passwordError && (
+                    <FormErrorMessage>{passwordError}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <FormControl isInvalid={!!confirmPasswordError}>
+                  <FormLabel
+                    htmlFor="confirm-password"
+                    className="text-md font-medium text-gray-900"
+                  >
+                    Confirm New Password
+                  </FormLabel>
+                  <Input
+                    type="password"
+                    id="confirm-password"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    placeholder="Confirm new password"
+                    required
+                  />
+                  {confirmPasswordError && (
+                    <FormErrorMessage>{confirmPasswordError}</FormErrorMessage>
+                  )}
+                </FormControl>
+                <Button
+                  type="submit"
+                  width="100%"
+                  variant="solid"
+                  colorScheme="green"
+                  color="white"
+                  isLoading={loading}
+                  loadingText="Resetting..."
                 >
-                  New Password
-                </FormLabel>
-                <Input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  placeholder="Enter new password"
-                  required
-                />
-                {passwordError && (
-                  <FormErrorMessage>{passwordError}</FormErrorMessage>
-                )}
-              </FormControl>
-              <FormControl isInvalid={!!confirmPasswordError}>
-                <FormLabel
-                  htmlFor="confirm-password"
-                  className="text-md font-medium text-gray-900"
+                  <span>{!loading && "Reset Password"}</span>
+                </Button>
+              </form>
+            </>
+          ) : (
+            <>
+              <h1 className="text-2xl font-bold text-center mytxt">
+                Enter Code
+              </h1>
+              <p className="text-center text-gray-700 mt-2">
+                Check your email for a code to reset your password. If it{" "}
+                {"doesn’t "}
+                appear within a few minutes, check your spam folder.
+              </p>
+              <form onSubmit={handleSubmit} className="space-y-4 mt-5">
+                <FormControl>
+                  <FormLabel
+                    htmlFor="code"
+                    className="text-md font-medium text-gray-900"
+                  >
+                    Code
+                  </FormLabel>
+                  <Input
+                    type="text"
+                    id="code"
+                    value={code}
+                    onChange={handleCodeChange}
+                    maxLength={4} // Set maximum length to 4 characters
+                    placeholder="Enter the code"
+                    required
+                  />
+                </FormControl>
+                <Button
+                  type="submit"
+                  width="100%"
+                  variant="solid"
+                  disabled={code.length !== 4}
+                  colorScheme={code.length === 4 ? "green" : "blackAlpha"}
+                  color="white"
+                  isLoading={loading}
+                  loadingText="Checking..."
                 >
-                  Confirm New Password
-                </FormLabel>
-                <Input
-                  type="password"
-                  id="confirm-password"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  placeholder="Confirm new password"
-                  required
-                />
-                {confirmPasswordError && (
-                  <FormErrorMessage>{confirmPasswordError}</FormErrorMessage>
-                )}
-              </FormControl>
-              <Button
-                type="submit"
-                width="100%"
-                variant="solid"
-                colorScheme="green"
-                color="white"
-                isLoading={loading}
-                loadingText="Resetting..."
+                  <span>{!loading && "Check Code"}</span>
+                </Button>
+              </form>
+              <div className="text-start mt-4">
+                <span className="text-gray-700">
+                  {"Didn't"} receive a code,{" "}
+                </span>
+                <Link href={"/auth/forgotpassword"} className="text-blue-500">
+                  Try Again
+                </Link>
+              </div>
+            </>
+          )}
+          <div className="mt-6 text-center">
+            <p className="text-md font-light text-gray-500">
+              Remembered your password?{" "}
+              <Link
+                href="/auth/login"
+                className="font-semibold text-blue-600 hover:underline"
               >
-                <span>{!loading && "Reset Password"}</span>
-              </Button>
-            </form>
-          </>
-        ) : (
-          <>
-            <h1 className="text-2xl font-bold text-center mytxt">Enter Code</h1>
-            <p className="text-center text-gray-700 mt-2">
-              Check your email for a code to reset your password. If it doesn’t
-              appear within a few minutes, check your spam folder.
-            </p>
-            <form onSubmit={handleSubmit} className="space-y-4 mt-5">
-              <FormControl>
-                <FormLabel
-                  htmlFor="code"
-                  className="text-md font-medium text-gray-900"
-                >
-                  Code
-                </FormLabel>
-                <Input
-                  type="text"
-                  id="code"
-                  value={code}
-                  onChange={handleCodeChange}
-                  maxLength={4} // Set maximum length to 4 characters
-                  placeholder="Enter the code"
-                  required
-                />
-              </FormControl>
-              <Button
-                type="submit"
-                width="100%"
-                variant="solid"
-                disabled={code.length !== 4}
-                colorScheme={code.length === 4 ? "green" : "blackAlpha"}
-                color="white"
-                isLoading={loading}
-                loadingText="Checking..."
-              >
-                <span>{!loading && "Check Code"}</span>
-              </Button>
-            </form>
-            <div className="text-start mt-4">
-              <span className="text-gray-700">{"Didn't"} receive a code, </span>
-              <Link href={"/auth/forgotpassword"} className="text-blue-500">
-                Try Again
+                Log in
               </Link>
-            </div>
-          </>
-        )}
-        <div className="mt-6 text-center">
-          <p className="text-md font-light text-gray-500">
-            Remembered your password?{" "}
-            <Link
-              href="/auth/login"
-              className="font-semibold text-blue-600 hover:underline"
-            >
-              Log in
-            </Link>
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

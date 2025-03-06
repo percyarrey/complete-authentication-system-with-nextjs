@@ -124,114 +124,116 @@ export default function Page() {
   }
 
   return (
-    <section className="flex overflow-hidden min-h-[95vh]">
-      <div className="w-full flex justify-center items-center">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight mytxt md:text-2xl dark:text-white text-center">
-              Log in to your account
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <FormControl isRequired={data.email == ""}>
-                <FormLabel
-                  htmlFor="email"
-                  className="text-md font-medium text-gray-900 dark:text-white"
-                >
-                  Your email
-                </FormLabel>
-                <Input
-                  value={data.email}
-                  onChange={handleChange}
-                  autoComplete="on"
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="name@company.com"
-                  className="bg-gray-50 dark:bg-gray-700 dark:text-white"
-                />
-              </FormControl>
-              <FormControl isRequired={data.password == ""}>
-                <FormLabel
-                  htmlFor="password"
-                  className="text-md font-medium text-gray-900 dark:text-white"
-                >
-                  Password
-                </FormLabel>
-                <Input
-                  value={data.password}
-                  autoComplete="on"
-                  onChange={handleChange}
-                  type={showPassword ? "password" : "text"}
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 dark:bg-gray-700 dark:text-white"
-                />
-                <span
-                  onClick={togglePassword}
-                  className="absolute cursor-pointer bottom-2 right-3"
-                >
-                  {showPassword ? <BiShow size={25} /> : <BiHide size={25} />}
-                </span>
-              </FormControl>
-              <div className="flex items-center justify-between">
-                <Checkbox
-                  id="remember"
-                  name="rememberMe"
-                  onChange={handleChange}
-                  className="mt-2"
-                >
-                  Remember me
-                </Checkbox>
-                <Link
-                  href="/auth/forgotpassword"
-                  className="text-md font-medium text-blue-600 hover:underline dark:text-blue-500"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-              <Button
-                type="submit"
-                width="100%"
-                variant={"solid"}
-                colorScheme="green"
-                color={"white"}
-                isLoading={loading}
-                loadingText="Logging In"
-              >
-                <span>{!loading && "Log In"}</span>
-              </Button>
-
-              <GoogleButton
-                onClick={handleGoogle}
-                style={{ width: "100%" }}
-                className="mx-auto"
-              />
-
-              <div>
-                <p className="text-md font-light text-gray-600 dark:text-gray-400">
-                  Don’t have an account yet?{" "}
-                  <Link
-                    href="/auth/register"
-                    className="font-semibold mytxt hover:underline dark:text-blue-500"
+    <>
+      <section className="flex overflow-hidden min-h-[95vh]">
+        <div className="w-full flex justify-center items-center">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight mytxt md:text-2xl dark:text-white text-center">
+                Log in to your account
+              </h1>
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <FormControl isRequired={data.email == ""}>
+                  <FormLabel
+                    htmlFor="email"
+                    className="text-md font-medium text-gray-900 dark:text-white"
                   >
-                    Register
-                  </Link>
-                </p>
-                <p className="text-md font-light text-gray-600 dark:text-gray-400">
-                  Don’t want to Login?{" "}
-                  <Link
-                    href="/"
-                    className="font-semibold text-red-600 hover:underline dark:text-red-500"
+                    Your email
+                  </FormLabel>
+                  <Input
+                    value={data.email}
+                    onChange={handleChange}
+                    autoComplete="on"
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="name@company.com"
+                    className="bg-gray-50 dark:bg-gray-700 dark:text-white"
+                  />
+                </FormControl>
+                <FormControl isRequired={data.password == ""}>
+                  <FormLabel
+                    htmlFor="password"
+                    className="text-md font-medium text-gray-900 dark:text-white"
                   >
-                    Return Home
+                    Password
+                  </FormLabel>
+                  <Input
+                    value={data.password}
+                    autoComplete="on"
+                    onChange={handleChange}
+                    type={showPassword ? "password" : "text"}
+                    name="password"
+                    id="password"
+                    placeholder="••••••••"
+                    className="bg-gray-50 dark:bg-gray-700 dark:text-white"
+                  />
+                  <span
+                    onClick={togglePassword}
+                    className="absolute cursor-pointer bottom-2 right-3"
+                  >
+                    {showPassword ? <BiShow size={25} /> : <BiHide size={25} />}
+                  </span>
+                </FormControl>
+                <div className="flex items-center justify-between">
+                  <Checkbox
+                    id="remember"
+                    name="rememberMe"
+                    onChange={handleChange}
+                    className="mt-2"
+                  >
+                    Remember me
+                  </Checkbox>
+                  <Link
+                    href="/auth/forgotpassword"
+                    className="text-md font-medium text-blue-600 hover:underline dark:text-blue-500"
+                  >
+                    Forgot password?
                   </Link>
-                </p>
-              </div>
-            </form>
+                </div>
+                <Button
+                  type="submit"
+                  width="100%"
+                  variant={"solid"}
+                  colorScheme="green"
+                  color={"white"}
+                  isLoading={loading}
+                  loadingText="Logging In"
+                >
+                  <span>{!loading && "Log In"}</span>
+                </Button>
+
+                <GoogleButton
+                  onClick={handleGoogle}
+                  style={{ width: "100%" }}
+                  className="mx-auto"
+                />
+
+                <div>
+                  <p className="text-md font-light text-gray-600 dark:text-gray-400">
+                    Don’t have an account yet?{" "}
+                    <Link
+                      href="/auth/register"
+                      className="font-semibold mytxt hover:underline dark:text-blue-500"
+                    >
+                      Register
+                    </Link>
+                  </p>
+                  <p className="text-md font-light text-gray-600 dark:text-gray-400">
+                    Don’t want to Login?{" "}
+                    <Link
+                      href="/"
+                      className="font-semibold text-red-600 hover:underline dark:text-red-500"
+                    >
+                      Return Home
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

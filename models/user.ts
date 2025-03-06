@@ -54,6 +54,14 @@ const userSchema = new Schema({
     type: Date,
     required: false,
   },
+  country: {
+    type: String,
+    required: false,
+  },
+  whatsapp: {
+    type: String,
+    required: false,
+  },
   role: {
     type: String,
     enum: ["user", "admin"], // You can add more roles if needed

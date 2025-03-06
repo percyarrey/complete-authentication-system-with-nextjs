@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
 interface CustomSession {
   user?: {
     name?: string | null;
@@ -11,6 +12,7 @@ interface CustomSession {
   };
   expires: string; // or ISODateString if you have that type defined
 }
+
 export default async function PrivateLayout({
   children,
 }: {
@@ -19,7 +21,9 @@ export default async function PrivateLayout({
   const data = await auth();
   // Type assertion for the session
   const session = data as CustomSession;
-  if (!session?.user) redirect("/auth/register");
+
+  if (!session?.user) redirect("/auth/login");
   if (!session?.user?.isVerified) redirect("/auth/verifyemail");
-  return { children };
+
+  return <div className="container-lg">{children}</div>; // Wrap children in a fragment
 }

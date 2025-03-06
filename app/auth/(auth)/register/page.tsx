@@ -146,158 +146,160 @@ export default function Page() {
   }
 
   return (
-    <section className="flex overflow-hidden min-h-[100vh]">
-      <div className="w-full flex justify-center items-center">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight mytxt md:text-2xl dark:text-white text-center">
-              Create an account
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <FormControl
-                id="name"
-                isInvalid={!!errors.name}
-                isRequired={data.name === ""}
-              >
-                <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
-                  Name
-                </FormLabel>
-                <Input
-                  value={data.name}
-                  onChange={handleChange}
-                  type="text"
-                  name="name"
-                  variant="outline"
-                  placeholder=""
-                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-                <FormErrorMessage>{errors.name}</FormErrorMessage>
-              </FormControl>
-
-              <FormControl
-                id="email"
-                isInvalid={!!errors.email}
-                isRequired={data.email === ""}
-              >
-                <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
-                  Email
-                </FormLabel>
-                <Input
-                  value={data.email}
-                  onChange={handleChange}
-                  type="email"
-                  name="email"
-                  variant="outline"
-                  placeholder="name@company.com"
-                  required
-                  autoComplete="off"
-                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-                <FormErrorMessage>{errors.email}</FormErrorMessage>
-              </FormControl>
-
-              <FormControl
-                id="password"
-                isInvalid={!!errors.password}
-                className="relative"
-                isRequired={data.password === ""}
-              >
-                <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
-                  Password
-                </FormLabel>
-                <Input
-                  value={data.password}
-                  onChange={handleChange}
-                  type={showPassword ? "password" : "text"}
-                  name="password"
-                  variant="outline"
-                  placeholder="••••••••"
-                  required
-                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-                <FormErrorMessage>{errors.password}</FormErrorMessage>
-                <span
-                  onClick={togglePassword}
-                  className="absolute cursor-pointer  top-[2.37rem] right-3"
+    <>
+      <section className="flex overflow-hidden min-h-[100vh]">
+        <div className="w-full flex justify-center items-center">
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight mytxt md:text-2xl dark:text-white text-center">
+                Create an account
+              </h1>
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <FormControl
+                  id="name"
+                  isInvalid={!!errors.name}
+                  isRequired={data.name === ""}
                 >
-                  {showPassword ? <BiShow size={25} /> : <BiHide size={25} />}
-                </span>
-              </FormControl>
+                  <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
+                    Name
+                  </FormLabel>
+                  <Input
+                    value={data.name}
+                    onChange={handleChange}
+                    type="text"
+                    name="name"
+                    variant="outline"
+                    placeholder=""
+                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  />
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
+                </FormControl>
 
-              <FormControl
-                id="confirmPassword"
-                isInvalid={!!errors.confirmPassword}
-                className="relative"
-                isRequired={data.confirmPassword === ""}
-              >
-                <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
-                  Confirm Password
-                </FormLabel>
-                <Input
-                  value={data.confirmPassword}
-                  onChange={handleChange}
-                  type={showConfirmPassword ? "password" : "text"}
-                  name="confirmPassword"
-                  variant="outline"
-                  placeholder="••••••••"
-                  required
-                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                />
-                <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
-                <span
-                  onClick={toggleConfirmPassword}
-                  className="absolute cursor-pointer top-[2.37rem] right-3"
+                <FormControl
+                  id="email"
+                  isInvalid={!!errors.email}
+                  isRequired={data.email === ""}
                 >
-                  {showConfirmPassword ? (
-                    <BiShow size={25} />
-                  ) : (
-                    <BiHide size={25} />
-                  )}
-                </span>
-              </FormControl>
+                  <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
+                    Email
+                  </FormLabel>
+                  <Input
+                    value={data.email}
+                    onChange={handleChange}
+                    type="email"
+                    name="email"
+                    variant="outline"
+                    placeholder="name@company.com"
+                    required
+                    autoComplete="off"
+                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
 
-              <Button
-                type="submit"
-                width="100%"
-                variant="solid"
-                colorScheme="green"
-                color="white"
-                isLoading={loading}
-                loadingText="Registering"
-              >
-                <span>{!loading && "Register"}</span>
-              </Button>
-
-              <GoogleButton
-                onClick={() => signIn("google")}
-                style={{ width: "100%" }}
-                className="mx-auto"
-              />
-
-              <div>
-                <p className="text-md font-light text-gray-600 dark:text-gray-400">
-                  Already have an Account?{" "}
-                  <Link
-                    href="/auth/login"
-                    className="font-semibold mytxt hover:underline dark:text-blue-500"
+                <FormControl
+                  id="password"
+                  isInvalid={!!errors.password}
+                  className="relative"
+                  isRequired={data.password === ""}
+                >
+                  <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
+                    Password
+                  </FormLabel>
+                  <Input
+                    value={data.password}
+                    onChange={handleChange}
+                    type={showPassword ? "password" : "text"}
+                    name="password"
+                    variant="outline"
+                    placeholder="••••••••"
+                    required
+                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  />
+                  <FormErrorMessage>{errors.password}</FormErrorMessage>
+                  <span
+                    onClick={togglePassword}
+                    className="absolute cursor-pointer  top-[2.37rem] right-3"
                   >
-                    Log In
-                  </Link>
-                </p>
-                <p className="text-md font-light text-gray-600 dark:text-gray-400">
-                  Don’t want to Register?{" "}
-                  <Link
-                    href="/"
-                    className="font-semibold text-red-600 hover:underline dark:text-red-500"
+                    {showPassword ? <BiShow size={25} /> : <BiHide size={25} />}
+                  </span>
+                </FormControl>
+
+                <FormControl
+                  id="confirmPassword"
+                  isInvalid={!!errors.confirmPassword}
+                  className="relative"
+                  isRequired={data.confirmPassword === ""}
+                >
+                  <FormLabel className="text-md font-medium text-gray-900 dark:text-white">
+                    Confirm Password
+                  </FormLabel>
+                  <Input
+                    value={data.confirmPassword}
+                    onChange={handleChange}
+                    type={showConfirmPassword ? "password" : "text"}
+                    name="confirmPassword"
+                    variant="outline"
+                    placeholder="••••••••"
+                    required
+                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                  />
+                  <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
+                  <span
+                    onClick={toggleConfirmPassword}
+                    className="absolute cursor-pointer top-[2.37rem] right-3"
                   >
-                    Return Home
-                  </Link>
-                </p>
-              </div>
-            </form>
+                    {showConfirmPassword ? (
+                      <BiShow size={25} />
+                    ) : (
+                      <BiHide size={25} />
+                    )}
+                  </span>
+                </FormControl>
+
+                <Button
+                  type="submit"
+                  width="100%"
+                  variant="solid"
+                  colorScheme="green"
+                  color="white"
+                  isLoading={loading}
+                  loadingText="Registering"
+                >
+                  <span>{!loading && "Register"}</span>
+                </Button>
+
+                <GoogleButton
+                  onClick={() => signIn("google")}
+                  style={{ width: "100%" }}
+                  className="mx-auto"
+                />
+
+                <div>
+                  <p className="text-md font-light text-gray-600 dark:text-gray-400">
+                    Already have an Account?{" "}
+                    <Link
+                      href="/auth/login"
+                      className="font-semibold mytxt hover:underline dark:text-blue-500"
+                    >
+                      Log In
+                    </Link>
+                  </p>
+                  <p className="text-md font-light text-gray-600 dark:text-gray-400">
+                    Don’t want to Register?{" "}
+                    <Link
+                      href="/"
+                      className="font-semibold text-red-600 hover:underline dark:text-red-500"
+                    >
+                      Return Home
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

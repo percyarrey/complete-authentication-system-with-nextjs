@@ -1,26 +1,37 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 /* HOMESECTIONS */
 
 /* DYNAMIC */
-/* import dynamic from "next/dynamic"; */
-/* const Hero = dynamic(() => import('./components/homesections/Hero'));
-const HeroCarts = dynamic(() => import('./components/homesections/HeroCarts'));
-const Discount = dynamic(() => import('./components/homesections/Discount'));
-const BrandCarts = dynamic(() => import('./components/homesections/BrandCarts'));
-const Trending = dynamic(() => import('./components/homesections/Trending'));
-const ExtraProduct = dynamic(() => import('./components/homesections/ExtraProduct')); */
+import dynamic from "next/dynamic";
+const Hero = dynamic(() => import("@/app/components/homeSections/Hero"));
+const AboutGiftapex = dynamic(
+  () => import("@/app/components/homeSections/AboutGiftapex")
+);
+const Howto = dynamic(() => import("@/app/components/homeSections/Howto"));
+const Whyuse = dynamic(() => import("@/app/components/homeSections//Whyuse"));
 
 export default function Home() {
-  /* const [component1Loaded, setComponent1Loaded] = useState(false);
+  const router = useRouter();
+  const { data: session, status }: { data: any; status: any } = useSession();
+  const [component1Loaded, setComponent1Loaded] = useState(false);
   const [component2Loaded, setComponent2Loaded] = useState(false);
   const [component3Loaded, setComponent3Loaded] = useState(false);
   const [component4Loaded, setComponent4Loaded] = useState(false);
-  const [component5Loaded, setComponent5Loaded] = useState(false);
-  const [component6Loaded, setComponent6Loaded] = useState(false); */
-  /* useEffect(() => {
-    setComponent1Loaded(true);
-  }, []);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      if (session.user?.role === "admin") {
+        router.push("/admin/recent-requests");
+      } else {
+        router.push("/user/sell-code");
+      }
+    } else {
+      setComponent1Loaded(true);
+    }
+  }, [status]);
 
   const handleComponent2 = () => {
     setComponent2Loaded(true);
@@ -33,43 +44,46 @@ export default function Home() {
     setComponent4Loaded(true);
   };
 
-  const handleComponent5 = () => {
-    setComponent5Loaded(true);
+  const heroCarouselRef: any = useRef(null);
+  const loadheroCarousel = () => {
+    if (heroCarouselRef) {
+      if (heroCarouselRef.current) {
+        heroCarouselRef.current();
+      }
+    }
   };
 
-  const handleComponent6 = () => {
-    setComponent6Loaded(true);
-  }; */
-
   return (
-    <main className="min-h-[55vh]">
+    <main>
       {/* HERO */}
-      {/* {component1Loaded && <Hero VideoRef={VideoRef} handle={handleComponent2}/>} */}
-      <div className=" relative top-[-0.2rem]  bg-white">
-        {/* HERO CARTS */}
-        {/* {component2Loaded && <HeroCarts  handle={handleComponent3}/>} */}
-        {/* DISCOUNT */}
-        {/* {component3Loaded && <Discount  handle={handleComponent4}/>} */}
-        {/* BRANDS CARTS */}
-        {/* {component4Loaded && <BrandCarts  handle={handleComponent5}/>} */}
-
-        {/* TRENDING PRODUCTS */}
-        {/* {component5Loaded && <Trending  handle={handleComponent6}/>} */}
-
-        {/* Extra Products */}
-        {/* {component6Loaded ? 
-        
-        <div  style={{display:'flex',minHeight:'50vh',justifyContent:'center',alignItems:'center',flexDirection:'column'}} >
-        <div className='h-8 w-8 inline-block rounded-full border-4 border-r-gray-800 border-solid animate-spin' role='status'>
-        </div>
-    </div>
-      } */}
-
-        {/* HIDING */}
-        <section className="h-0">
-          <div className="h-[1rem] bg-white"></div>
-        </section>
-      </div>
+      {component1Loaded && (
+        <Hero heroCarouselRef={heroCarouselRef} handle={handleComponent2} />
+      )}
+      {/* ABOUT GIFTAPEX */}
+      {component2Loaded && <AboutGiftapex handle={handleComponent3} />}
+      {/* HOW TO */}
+      {component3Loaded && <Howto handle={handleComponent4} />}
+      {/* WHY USE */}
+      {component4Loaded ? (
+        <Whyuse handle={loadheroCarousel} />
+      ) : (
+        <>
+          <div
+            style={{
+              display: "flex",
+              minHeight: "50vh",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              className="h-8 w-8 inline-block rounded-full border-4 border-r-gray-800 border-solid animate-spin"
+              role="status"
+            ></div>
+          </div>
+        </>
+      )}
     </main>
   );
 }

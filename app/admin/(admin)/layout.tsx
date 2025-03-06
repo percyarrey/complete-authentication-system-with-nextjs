@@ -1,6 +1,7 @@
 import React from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import AdminSidebar from "../components/admin-sidebar";
 
 interface CustomSession {
   user?: {
@@ -14,25 +15,31 @@ interface CustomSession {
 }
 
 interface PrivateLayoutProps {
-  children: React.ReactNode; // Correctly define the children prop type
+  children: React.ReactNode;
 }
 
 export default async function PrivateLayout({ children }: PrivateLayoutProps) {
   const data = await auth();
 
-  // Type assertion for the session
   const session = data as CustomSession;
 
   if (session?.user) {
-    if (!session.user.isVerified) {
-      redirect("/auth/verifyemail");
-    }
-    if (session.user.role !== "admin") {
-      redirect("/");
+    if (session.user.role !== "admin" || !session.user.isVerified) {
+      redirect("/auth/login");
     }
   } else {
     redirect("/auth/login");
   }
 
-  return { children };
+  return (
+    <div className=" bg-gray-100">
+      <div className="flex flex-col lg:flex-row h-screen container-lg">
+        {/* Sidebar */}
+        <AdminSidebar />
+
+        {/* Main Content */}
+        <div className="flex-1 p-4 overflow-auto bg-white">{children}</div>
+      </div>
+    </div>
+  );
 }

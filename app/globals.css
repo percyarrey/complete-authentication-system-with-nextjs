@@ -8,7 +8,8 @@
   background-color: #003d29;
 }
 .mytxt {
-  color: #1a5843;
+  /* color: #1a5843; */
+  color: rgb(1, 107, 1);
 }
 body {
   font-family: Helvetica, Arial, sans-serif;
@@ -48,4 +49,39 @@ footer a {
 
 footer a:hover {
   color: #c34482;
+}
+
+/* SWIPER */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: green;
+  scale: 0.6;
+}
+
+/* NAVBAR OPEN */
+.chakra-modal__content-container {
+  z-index: 50 !important;
+  background-color: rgb(243 244 246) !important;
+}
+
+.container-lg {
+  width: 100%;
+  /* This value is for large screens */
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 500px) {
+  .container-lg {
+    padding-right: 2rem;
+    padding-left: 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .container-lg {
+    padding-right: 6rem;
+    padding-left: 6rem;
+  }
 }

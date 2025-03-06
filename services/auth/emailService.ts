@@ -3,8 +3,6 @@ import connectDB from "@/utils/connectDB";
 import User from "@/models/user";
 import sendEmail from "@/utils/sendEmail";
 
-const websiteName = "CreativeParts";
-
 function generateCode(length = 4) {
   const charset = "0123456789";
   let code = "";
@@ -27,7 +25,7 @@ export async function sendForgotPassEmail(email: string) {
       subject: "Forgot Password for",
       name: user.name,
       email: user.email,
-      template: "forgotPassEmail.html",
+      template: "forgotPassEmail",
       code: code,
     };
 
@@ -61,7 +59,7 @@ export async function verifyEmail(email: string) {
       subject: "Verify your Email for",
       name: user.name,
       email: user.email,
-      template: "verifyEmail.html",
+      template: "verifyEmail",
       code: code,
     };
     try {

@@ -8,28 +8,29 @@ import AuthProvider from "./components/auth-redux/AuthProvider";
 //COMPONENTS
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HeaderToggler from "./components/header/HeaderToggler";
-import { Suspense } from "react";
-import Loading from "./loading";
 import Margin from "./components/header/Margin";
 export const metadata: Metadata = {
-  title: "Complete Auth System",
-  description: "Complete authentication created with next js",
+  title: "GiftApex - Swap Gift Cards for Cash",
+  description:
+    "GiftApex web app project outline want a website that is a blend of gift2money and faixchange for swapping gift cards for money",
 };
 //TOASTER JS
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { auth } from "@/auth";
+import React from "react";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <AuthProvider>
       <html lang="en" className="light">
         <body className="flex justify-between flex-col w-[100vw] overflow-x-hidden min-h-[100vh] ">
-          <div>
+          <div className="flex-1 relative ">
             {/* REACT TOAST */}
             <ToastContainer
               position="top-center"
@@ -43,17 +44,14 @@ export default function RootLayout({
               pauseOnHover
               theme="light"
             />
-            <HeaderToggler />
 
-            <Header />
+            <Header session={session} />
             <Margin />
-            <div className=" px-1 lg:px-8">
-              <Suspense fallback={<Loading />}>
-                <Providers>{children}</Providers>
-              </Suspense>
+            <div>
+              <Providers>{children}</Providers>
             </div>
           </div>
-          <Footer />
+          <Footer session={session} />
         </body>
       </html>
     </AuthProvider>

@@ -30,7 +30,8 @@
     ".next/types/**/*.ts",
     "app/components/header/HeaderToggler.tsx",
     "app/components/header/Margin.tsx",
-    "app/api/auth/[...nextauth]/route.ts"
+    "app/api/auth/[...nextauth]/route.ts",
+    ".next/types/app/admin/(admin)/recent-request/page.tsx"
   ],
   "exclude": ["node_modules"]
 }

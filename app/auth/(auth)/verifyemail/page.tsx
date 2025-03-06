@@ -81,61 +81,67 @@ const Page = () => {
   };
 
   return (
-    <section className="flex min-h-[95vh] justify-center items-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">Verify Your Email</h1>
-        <form onSubmit={handleVerify} className="space-y-4 mt-5">
-          <div>
-            <label
-              htmlFor="code"
-              className="block mb-2 text-md font-medium text-gray-900"
-            >
-              Verification Code
-            </label>
-            <input
-              type="text"
-              id="code"
-              value={code}
-              onChange={handleCodeChange}
-              maxLength={4}
-              className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 block w-full"
-              placeholder="Enter the verification code"
-              required
-            />
-          </div>
-          <Button
-            type="submit"
-            width="100%"
-            variant="solid"
-            disabled={code.length !== 4}
-            colorScheme={code.length === 4 ? "green" : "blackAlpha"}
-            color="white"
-            isLoading={loading}
-            loadingText="Verifying..."
-          >
-            <span>{!loading && "Verify"}</span>
-          </Button>
-        </form>
-        <div className="mt-4 text-center">
-          <p className="text-md font-light text-gray-500">
-            {sendCode.status ? (
-              <>{sendCode.message}</>
-            ) : (
-              <>
-                {"Didn't "}recieve code?{" "}
-                <button
-                  className=" text-green-700"
-                  onClick={handleVerifyEmailFxn}
-                  disabled={sendCode.loading}
-                >
-                  {sendCode.loading ? "Sending..." : "Send code"}
-                </button>
-              </>
-            )}
+    <>
+      <section className="flex min-h-[95vh] justify-center items-center">
+        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold text-center">Verify Your Email</h1>
+          <p className="text-center text-gray-500 mt-2">
+            Check your email for a code to Verify your Email. If it {"doesn’t "}
+            appear within a few minutes, check your spam folder.
           </p>
+          <form onSubmit={handleVerify} className="space-y-4 mt-5">
+            <div>
+              <label
+                htmlFor="code"
+                className="block mb-2 text-md font-semibold text-gray-900"
+              >
+                Verification Code
+              </label>
+              <input
+                type="text"
+                id="code"
+                value={code}
+                onChange={handleCodeChange}
+                maxLength={4}
+                className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 block w-full mb-2"
+                placeholder="Enter the verification code"
+                required
+              />
+            </div>
+            <Button
+              type="submit"
+              width="100%"
+              variant="solid"
+              disabled={code.length !== 4}
+              colorScheme={code.length === 4 ? "green" : "blackAlpha"}
+              color="white"
+              isLoading={loading}
+              loadingText="Verifying..."
+            >
+              <span>{!loading && "Verify"}</span>
+            </Button>
+          </form>
+          <div className="mt-4 text-center">
+            <p className="text-md font-light text-gray-500">
+              {sendCode.status ? (
+                <>{sendCode.message}</>
+              ) : (
+                <>
+                  {"Didn't "}recieve code?{" "}
+                  <button
+                    className=" text-green-700"
+                    onClick={handleVerifyEmailFxn}
+                    disabled={sendCode.loading}
+                  >
+                    {sendCode.loading ? "Sending..." : "Send code"}
+                  </button>
+                </>
+              )}
+            </p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

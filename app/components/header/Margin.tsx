@@ -12,6 +12,9 @@ export default function Margin() {
   if (isActive("/auth")) {
     return null;
   }
+  if (isActive("/admin")) {
+    return <div className="mt-[3rem] lg:mt-[4.5rem]"></div>;
+  }
 
-  return <div className="mt-[4.1rem]"></div>;
+  return <div className="mt-[4.5rem]"></div>;
 }
